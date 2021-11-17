@@ -2,7 +2,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-config-dns
-  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
@@ -15,7 +14,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-namespace-dns
+          name: policy-config-dns
         spec:
           remediationAction: inform
           severity: low
@@ -44,7 +43,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-config-dns
-  namespace: default
 placementRef:
   name: placement-policy-config-dns
   kind: PlacementRule
@@ -58,15 +56,14 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-config-dns
-  namespace: default
 spec:
   clusterConditions:
     - status: 'True'
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - key: cloud
+      - key: environment
         operator: In
         values:
-          - Amazon
+          - dev
 
