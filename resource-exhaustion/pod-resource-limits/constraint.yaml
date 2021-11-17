@@ -3,7 +3,7 @@ kind: K8sPodResourceLimit
 metadata:
   name: no-resource-limit-pods
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: [""]

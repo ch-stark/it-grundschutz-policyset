@@ -1,6 +1,6 @@
 # This policy installs cert-manager from the jetstack cert-manager community
 # operator.  Cert-manager is installed in the openshift-operators namespace when
-# this policy is enforced.
+# this policy is informd.
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
@@ -10,7 +10,7 @@ metadata:
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
-  remediationAction: enforce
+  remediationAction: inform
   disabled: false
   policy-templates:
   - objectDefinition:

@@ -3,7 +3,7 @@ kind: K8sDisallowHostNetwork
 metadata:
   name: disallow-host-network
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: [""]

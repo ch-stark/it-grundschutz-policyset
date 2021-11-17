@@ -3,7 +3,7 @@ kind: K8sDisallowAnonymous
 metadata:
   name: no-anonymous
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: ["rbac.authorization.k8s.io"]

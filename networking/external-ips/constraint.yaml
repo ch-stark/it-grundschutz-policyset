@@ -4,7 +4,7 @@ kind: K8sExternalIPs
 metadata:
   name: external-ips
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: [""]

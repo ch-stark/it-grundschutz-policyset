@@ -22,7 +22,7 @@ spec:
                 kind: Namespace
                 metadata:
                   name: volsync-system
-          remediationAction: enforce
+          remediationAction: inform
           severity: high
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
@@ -30,7 +30,7 @@ spec:
         metadata:
           name: policy-volsync-application
         spec:
-          remediationAction: enforce
+          remediationAction: inform
           severity: low
           object-templates:
             - complianceType: musthave
@@ -70,7 +70,7 @@ spec:
                 spec:
                   pathname: https://backube.github.io/helm-charts/
                   type: HelmRepo
-          remediationAction: enforce
+          remediationAction: inform
           severity: low
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
@@ -98,7 +98,7 @@ spec:
                     placementRef:
                       name: volsync-placement 
                       kind: PlacementRule
-          remediationAction: enforce
+          remediationAction: inform
           severity: low
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
@@ -120,7 +120,7 @@ spec:
                   clusterSelector:
                     matchLabels:
                       vendor: OpenShift
-          remediationAction: enforce
+          remediationAction: inform
           severity: low
 ---
 apiVersion: policy.open-cluster-management.io/v1

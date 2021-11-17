@@ -16,7 +16,7 @@ spec:
       metadata:
         name: policy-update-service-subscription
       spec:
-        remediationAction: enforce
+        remediationAction: inform
         severity: medium
         namespaceSelector:
           exclude:
@@ -46,7 +46,7 @@ spec:
       metadata:
         name: policy-update-service
       spec:
-        remediationAction: enforce
+        remediationAction: inform
         severity: medium
         namespaceSelector:
           exclude:
@@ -62,7 +62,7 @@ spec:
                 name: sample
                 namespace: openshift-update-service
               spec:
-                foo: bar
+                bar: bar
                 graphDataImage: 'quay.io/openshifttest/cincinnati-graph-data-container:4.6'
                 releases: quay.io/openshift-release-dev/ocp-release
                 replicas: 2

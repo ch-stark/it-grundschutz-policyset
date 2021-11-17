@@ -3,7 +3,7 @@ kind: K8sDisallowClusterAdmin
 metadata:
   name: no-cluster-admin
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: ["rbac.authorization.k8s.io"]

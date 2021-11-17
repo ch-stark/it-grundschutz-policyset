@@ -1,6 +1,6 @@
 # This policy deploys the Red Hat Advanced Cluster Security Secure Cluster
 # Services to all OpenShift managed clusters.  Note that it is set to
-# enforce by default and it requires RHACM 2.3 template support.
+# inform by default and it requires RHACM 2.3 template support.
 #
 # Prior to applying this policy you must visit 
 # https://github.com/open-cluster-management/advanced-cluster-security 
@@ -17,7 +17,7 @@ metadata:
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
-  remediationAction: enforce
+  remediationAction: inform
   disabled: false
   policy-templates:
   - objectDefinition:

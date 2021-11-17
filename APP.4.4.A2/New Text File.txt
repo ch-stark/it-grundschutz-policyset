@@ -1,0 +1,1 @@
+APP.4.4.A2 Planning the automation with CI / CD 

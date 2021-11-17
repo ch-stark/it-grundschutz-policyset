@@ -1,7 +1,7 @@
 # This policy installs the Sysdig agent operator.  For more information about
 # Sysdig, see https://sysdig.com/
 #
-# This policy is set to enforce by default.  Be sure to update the placement
+# This policy is set to inform by default.  Be sure to update the placement
 # rule.
 #
 # When installing the Sysdig agent on OpenShift, the policy policy-kernel-devel
@@ -16,7 +16,7 @@ metadata:
     policy.open-cluster-management.io/categories: SI System and Information Integrity
     policy.open-cluster-management.io/controls: SI-5 Security Alerts, Advisories, and Directives
 spec:
-  remediationAction: enforce
+  remediationAction: inform
   disabled: false
   policy-templates:
     - objectDefinition:
@@ -25,7 +25,7 @@ spec:
         metadata:
           name: policy-sysdig-ns
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -44,7 +44,7 @@ spec:
         metadata:
           name: policy-sysdig-operatorgroup
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -66,7 +66,7 @@ spec:
         metadata:
           name: policy-sysdig-subscription
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -92,7 +92,7 @@ spec:
         metadata:
           name: policy-sysdig-installation
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -103,7 +103,7 @@ spec:
                 apiVersion: sysdig.com/v1
                 kind: SysdigAgent
                 metadata:
-                  name: sysdigagent-enforcement
+                  name: sysdigagent-informment
                   namespace: sysdig-operator
                 spec:
                   daemonset:

@@ -3,7 +3,7 @@ kind: K8sDisallowSelfProvisioner
 metadata:
   name: no-self-provisioner
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: ["rbac.authorization.k8s.io"]

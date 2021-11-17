@@ -1,6 +1,6 @@
 # This policy verifies the installation of Integrity Shield on the managed clusters.
 # 
-# "enforce", it will install Integirty Shield operator
+# "inform", it will install Integirty Shield operator
 
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
@@ -20,7 +20,7 @@ spec:
         metadata:
           name: policy-integrity-shield-namespace
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: High
           object-templates:
             - complianceType: musthave
@@ -35,7 +35,7 @@ spec:
         metadata:
           name: policy-integrity-shield-og
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: high
           object-templates:
             - complianceType: musthave
@@ -54,7 +54,7 @@ spec:
         metadata:
           name: policy-integrity-shield-sub
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: high
           object-templates:
             - complianceType: musthave
@@ -76,7 +76,7 @@ spec:
         metadata:
           name: policy-integrity-shield-cr
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: high
           object-templates:
             - complianceType: musthave
@@ -382,14 +382,14 @@ spec:
                     is_excluded { exclude_namespaces[_] = input.review.namespace}
 
                     # detect mode
-                    is_detect_mode { enforce_mode == "detect" }
+                    is_detect_mode { inform_mode == "detect" }
 
                     ################### 
                     # Default setting #
                     ###################
 
-                    # Mode whether to deny a invalid request [enforce/detect]
-                    enforce_mode = "enforce"
+                    # Mode whether to deny a invalid request [inform/detect]
+                    inform_mode = "inform"
 
                     # kinds to be skipped
                     skip_kinds = [
@@ -503,7 +503,7 @@ spec:
         metadata:
           name: policy-integrity-shield-policy-constraint
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: high
           object-templates:
             - complianceType: musthave
@@ -559,7 +559,7 @@ spec:
         metadata:
           name: policy-integrity-shield-sub-policy-constraint
         spec:
-          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
           severity: high
           object-templates:
             - complianceType: musthave

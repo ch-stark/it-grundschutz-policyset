@@ -16,7 +16,7 @@ spec:
         metadata:
           name: policy-example-pod-disruption-budget-prod-1
         spec:
-          remediationAction: enforce # will be overridden by remediationAction in parent policy
+          remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -32,14 +32,14 @@ spec:
                   minAvailable: 2  
                   selector:  
                     matchLabels:
-                      foo: bar
+                      bar: bar
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
           name: policy-example-pod-disruption-budget-prod-2
         spec:
-          remediationAction: enforce # will be overridden by remediationAction in parent policy
+          remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
           namespaceSelector:
             exclude: ["kube-*"]
@@ -55,7 +55,7 @@ spec:
                   maxUnavailable: 25% 
                   selector: 
                     matchLabels:
-                      foo: bar
+                      bar: bar
 
 ---
 apiVersion: policy.open-cluster-management.io/v1

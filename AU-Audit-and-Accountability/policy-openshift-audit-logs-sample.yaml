@@ -1,7 +1,7 @@
 # This policy will setup Elasticsearch, Kibana, ClusterLogging and ClusterLogForwarders
 # Using Kibana to view audit logs
 # 
-# When you set the remediationAction to "enforce", the policy installs Elasticsearch and ClusterLogging operators, and sets up ClusterLogForwarders.
+# When you set the remediationAction to "inform", the policy installs Elasticsearch and ClusterLogging operators, and sets up ClusterLogForwarders.
 #
 # This policy is valid for Openshift v4.6.x
 # Tested on Openshift v4.6.16
@@ -30,7 +30,7 @@ spec:
       metadata:
         name: policy-openshift-operators-redhat-namespace
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: High
         object-templates:
         - complianceType: musthave
@@ -45,7 +45,7 @@ spec:
       metadata:
         name: policy-elasticsearch-og
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave
@@ -61,7 +61,7 @@ spec:
       metadata:
         name: policy-elasticsearch-sub
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave
@@ -84,7 +84,7 @@ spec:
       metadata:
         name: policy-openshift-logging-namespace
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: High
         object-templates:
         - complianceType: musthave
@@ -99,7 +99,7 @@ spec:
       metadata:
         name: policy-cluster-logging-og
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave
@@ -118,7 +118,7 @@ spec:
       metadata:
         name: policy-cluster-logging-sub
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave
@@ -141,7 +141,7 @@ spec:
       metadata:
         name: policy-cluster-logging-cr
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave
@@ -210,7 +210,7 @@ spec:
       metadata:
         name: policy-cluster-log-forwarders
       spec:
-        remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+        remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
         severity: high
         object-templates:
         - complianceType: musthave

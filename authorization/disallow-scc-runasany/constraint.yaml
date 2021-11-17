@@ -3,7 +3,7 @@ kind: K8sNoRunAsAnySCC
 metadata:
   name: scc-disallow-runasany
 spec:
-  enforcementAction: dryrun
+  informmentAction: dryrun
   match:
     kinds:
       - apiGroups: ["security.openshift.io"]
