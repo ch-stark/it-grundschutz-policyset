@@ -86,7 +86,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-operatorgroup-poison-pill
+          name: policy-config-poison-pill
         spec:
           remediationAction: inform
           severity: low
