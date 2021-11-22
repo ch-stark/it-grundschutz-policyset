@@ -30,6 +30,7 @@ spec:
                 kind: AutomationController
                 metadata:
                   name: auto-controller
+                  namespace: ansible-automation-platform
                 spec:
                   admin_user: admin
                   create_preload_data: true
