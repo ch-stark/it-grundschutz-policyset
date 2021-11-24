@@ -31,6 +31,7 @@ spec:
                 kind: AppProject
                 metadata:
                   name: applications
+                  namespace: openshift-gitops
                   labels:
                     gitops.tier.layer: applications
                 spec:
