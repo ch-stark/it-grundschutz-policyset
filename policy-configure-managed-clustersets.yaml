@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-configure-managed-clustersets
+  name: policy-config-clustersets
   namespace: policy-openshift-gitops-operator
   annotations:
     policy.open-cluster-management.io/standards: NIST, NIST-CSF
@@ -41,21 +41,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-configure-managed-clustersets
+  name: binding-policy-config-clustersets
   namespace: policy-openshift-gitops-operator
 placementRef:
-  name: placement-policy-configure-managed-clustersets
+  name: placement-policy-config-clustersets
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-configure-managed-clustersets
+  - name: policy-config-clustersets
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-configure-managed-clustersets
+  name: placement-policy-config-clustersets
   namespace: policy-openshift-gitops-operator
 spec:
   clusterConditions:
@@ -63,7 +63,7 @@ spec:
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - key: name
+      - key: local-cluster
         operator: In
         values:
-          - local-cluster
+          - 'true'
