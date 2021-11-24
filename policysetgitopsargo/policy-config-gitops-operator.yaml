@@ -1,0 +1,242 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-config-gitops-operator
+  namespace: policy-openshift-gitops-operator
+  annotations:
+    policy.open-cluster-management.io/standards: NIST, NIST-CSF
+    policy.open-cluster-management.io/categories: PR.DS Data Security, PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-config-gitops-cm
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  policy.csv: |
+                    g, cstark, role:admin
+                    g, cmarango@redhat.com, role:admin
+                  policy.default: role:readonly
+                  scopes: '[groups,email]'
+                kind: ConfigMap
+                metadata:
+                  labels:
+                    app.kubernetes.io/managed-by: openshift-gitops
+                    app.kubernetes.io/name: argocd-rbac-cm
+                    app.kubernetes.io/part-of: argocd
+                  name: argocd-rbac-cm
+                  namespace: openshift-gitops
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-config-gitops-config-crb
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: ClusterRoleBinding
+                metadata:
+                  name: cluster-admin-gitops
+                roleRef:
+                  apiGroup: rbac.authorization.k8s.io
+                  kind: ClusterRole
+                  name: cluster-admin
+                subjects:
+                - kind: ServiceAccount
+                  name: openshift-gitops-argocd-application-controller
+                  namespace: openshift-gitops
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-config-gitops-operator-7777
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: argoproj.io/v1alpha1
+                kind: ArgoCD
+                metadata:
+                  finalizers:
+                  - argoproj.io/finalizer
+                  name: openshift-gitops
+                  namespace: openshift-gitops
+                spec:
+                  applicationSet:
+                    resources:
+                      limits:
+                        cpu: "2"
+                        memory: 1Gi
+                      requests:
+                        cpu: 250m
+                        memory: 512Mi
+                  controller:
+                    parallelismLimit: 20
+                    processors:
+                      operation: 25
+                      status: 50
+                    resources:
+                      limits:
+                        cpu: "2"
+                        memory: 2Gi
+                      requests:
+                        cpu: 250m
+                        memory: 1Gi
+                    sharding:
+                      enabled: true
+                      replicas: 3
+                  dex:
+                    openShiftOAuth: true
+                    resources:
+                      limits:
+                        cpu: 500m
+                        memory: 256Mi
+                      requests:
+                        cpu: 250m
+                        memory: 128Mi
+                  grafana:
+                    enabled: false
+                    ingress:
+                      enabled: false
+                    resources:
+                      limits:
+                        cpu: 500m
+                        memory: 256Mi
+                      requests:
+                        cpu: 250m
+                        memory: 128Mi
+                    route:
+                      enabled: false
+                  ha:
+                    enabled: true
+                    resources:
+                      limits:
+                        cpu: 500m
+                        memory: 256Mi
+                      requests:
+                        cpu: 250m
+                        memory: 128Mi
+                  initialSSHKnownHosts: {}
+                  prometheus:
+                    enabled: false
+                    ingress:
+                      enabled: false
+                    route:
+                      enabled: false
+                  rbac:
+                    policy: g, system:cluster-admins, role:admin
+                    scopes: '[groups]'
+                  redis:
+                    resources:
+                      limits:
+                        cpu: 500m
+                        memory: 256Mi
+                      requests:
+                        cpu: 250m
+                        memory: 128Mi
+                  repo:
+                    resources:
+                      limits:
+                        cpu: "1"
+                        memory: 1Gi
+                      requests:
+                        cpu: 250m
+                        memory: 256Mi
+                  resourceExclusions: |
+                    - apiGroups:
+                      - tekton.dev
+                      clusters:
+                      - '*'
+                      kinds:
+                      - TaskRun
+                      - PipelineRun
+                  server:
+                    autoscale:
+                      enabled: true
+                      hpa:
+                        maxReplicas: 5
+                        minReplicas: 1
+                        scaleTargetRef:
+                          kind: Deployment
+                          name: openshift-gitops-server
+                    grpc:
+                      ingress:
+                        enabled: false
+                    ingress:
+                      enabled: false
+                    resources:
+                      limits:
+                        cpu: 500m
+                        memory: 256Mi
+                      requests:
+                        cpu: 125m
+                        memory: 128Mi
+                    route:
+                      enabled: true
+                    service:
+                      type: ""
+                  tls:
+                    ca: {}              
+
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-config-gitops-operator
+  namespace: policy-openshift-gitops-operator
+placementRef:
+  name: placement-policy-config-gitops-operator
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-config-gitops-operator
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-config-gitops-operator
+  namespace: policy-openshift-gitops-operator
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: cloud
+        operator: In
+        values:
+          - Amazon

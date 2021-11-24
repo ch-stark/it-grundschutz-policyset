@@ -1,0 +1,118 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-gitops-appproject
+  namespace: policy-openshift-gitops-operator
+  annotations:
+    policy.open-cluster-management.io/standards: NIST, NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gitops-appproject
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: argoproj.io/v1alpha1
+                kind: AppProject
+                metadata:
+                  name: applications
+                  namespace: openshift-gitops
+                  labels:
+                    gitops.tier.layer: applications
+                spec:
+                  sourceRepos: []  # Populated by kustomize patches in 3-apps/kustomization.yaml
+                  destinations:
+                  - namespace: '*'
+                    server: https://kubernetes.default.svc
+                  clusterResourceWhitelist:
+                  - group: '*'
+                    kind: '*'
+                  roles:
+                  # A role which provides read-only access to all applications in the project
+                  - name: read-only
+                    description: Read-only privileges to my-project
+                    policies:
+                    - p, proj:my-project:read-only, applications, get, my-project/*, allow
+                    groups:
+                    - argocd-admins
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gitops-app
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: argoproj.io/v1alpha1
+                kind: Application
+                metadata:
+                  name: remote-argo-nginx
+                  namespace: openshift-gitops
+                spec:
+                  destination:
+                    namespace: openshift-gitops
+                    server: 'https://kubernetes.default.svc'
+                  project: applications
+                  source:
+                    path: nginx
+                    repoURL: 'https://github.com/jnpacker/application-samples.git'
+                    targetRevision: HEAD
+                  syncPolicy:
+                    automated:
+                      prune: true
+                      selfHeal: true
+                    syncOptions:
+                      - CreateNamespace=true
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-gitops-appproject
+  namespace: policy-openshift-gitops-operator
+placementRef:
+  name: placement-policy-gitops-appproject
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-gitops-appproject
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-gitops-appproject
+  namespace: policy-openshift-gitops-operator
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: name
+        operator: In
+        values:
+          - local-cluster
