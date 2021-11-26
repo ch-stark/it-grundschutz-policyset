@@ -1,11 +1,11 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-config-clustersets
+  name: policy-gitops-operator-dex
   namespace: policies
   annotations:
-    policy.open-cluster-management.io/standards: NIST, NIST-CSF
-    policy.open-cluster-management.io/categories: PR.DS Data Security, PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
     policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
 spec:
   remediationAction: inform
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-configure-managed-clustersets-prod-ns
+          name: policy-gitops-operator-dex
         spec:
           remediationAction: inform
           severity: low
@@ -27,35 +27,44 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
-                apiVersion: cluster.open-cluster-management.io/v1beta1
-                kind: ManagedClusterSet
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
                 metadata:
-                  name: clusterset1
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: cluster.open-cluster-management.io/v1beta1
-                kind: ManagedClusterSet
-                metadata:
-                  name: clusterset2
+                  creationTimestamp: '2021-11-26T13:46:41Z'
+                  generation: 2
+                  labels:
+                    operators.coreos.com/openshift-gitops-operator.openshift-operators: ''
+                  name: openshift-gitops-operator
+                  namespace: openshift-operators
+                spec:
+                  channel: stable
+                  config:
+                    env:
+                      - name: DISABLE_DEX
+                        value: 'false'
+                  installPlanApproval: Automatic
+                  name: openshift-gitops-operator
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-config-clustersets
+  name: binding-policy-gitops-operator-dex
   namespace: policies
 placementRef:
-  name: placement-policy-config-clustersets
+  name: placement-policy-gitops-operator-dex
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-config-clustersets
+  - name: policy-gitops-operator-dex
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-config-clustersets
+  name: placement-policy-gitops-operator-dex
   namespace: policies
 spec:
   clusterConditions:
@@ -67,3 +76,4 @@ spec:
         operator: In
         values:
           - 'true'
+
