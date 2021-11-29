@@ -3,8 +3,8 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gitops-operator-nondefault
-  namespace: policy-openshift-gitops-operator
+  name: policy-gitops-operator-nondef
+  namespace: policies
   annotations:
     policy.open-cluster-management.io/standards: DevOps
     policy.open-cluster-management.io/categories: GitOps
@@ -43,22 +43,22 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gitops-operator-nondefault
-  namespace: policy-openshift-gitops-operator
+  name: binding-policy-gitops-operator-nondef
+  namespace: policies
 placementRef:
-  name: placement-policy-gitops-operator-nondefault
+  name: placement-policy-gitops-operator-nondef
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gitops-operator-nondefault
+  - name: policy-gitops-operator-nondef
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gitops-operator-nondefault
-  namespace: policy-openshift-gitops-operator
+  name: placement-policy-gitops-operator-nondef
+  namespace: policies
 spec:
   clusterConditions:
     - status: 'True'
