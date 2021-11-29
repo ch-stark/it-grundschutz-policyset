@@ -1,4 +1,4 @@
-:apiVersion: policy.open-cluster-management.io/v1
+apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-config-automationcontroller
@@ -31,6 +31,7 @@ spec:
                 kind: AutomationController
                 metadata:
                   name: auto-controller
+                  namespace: ansible-automation-platform    
                 spec:
                   admin_user: admin
                   create_preload_data: true

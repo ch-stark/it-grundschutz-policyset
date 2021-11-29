@@ -1,3 +1,26 @@
+# The OpenShiftOAuth property can be used to trigger the operator to auto configure the built-in OpenShift OAuth server. The RBAC Policy property is used to give the admin role in the Argo CD cluster to users in # the OpenShift cluster-admins group.
+# apiVersion: argoproj.io/v1alpha1
+# kind: ArgoCD
+# metadata:
+#   name: example-argocd
+#   labels:
+#     example: openshift-oauth
+# spec:
+#   dex:
+#     image: quay.io/ablock/dex
+#     openShiftOAuth: true
+#     version: openshift-connector
+#   rbac:
+#     defaultPolicy: 'role:readonly'
+#     policy: |
+#       g, system:cluster-admins, role:admin
+#     scopes: '[groups]'
+
+# https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/
+
+
+
+
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:

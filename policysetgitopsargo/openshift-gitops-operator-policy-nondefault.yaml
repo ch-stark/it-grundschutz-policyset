@@ -1,7 +1,9 @@
+# policy that installs Gitopsoperator, then disabled default instance
+
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gitops-operator
+  name: policy-gitops-operator-nondefault
   namespace: policy-openshift-gitops-operator
   annotations:
     policy.open-cluster-management.io/standards: DevOps
@@ -15,7 +17,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gitops-operator
+          name: policy-gitops-operator-nondefault
         spec:
           remediationAction: inform
           severity: high
@@ -41,21 +43,21 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gitops-operator
+  name: binding-policy-gitops-operator-nondefault
   namespace: policy-openshift-gitops-operator
 placementRef:
-  name: placement-policy-gitops-operator
+  name: placement-policy-gitops-operator-nondefault
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gitops-operator
+  - name: policy-gitops-operator-nondefault
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gitops-operator
+  name: placement-policy-gitops-operator-nondefault
   namespace: policy-openshift-gitops-operator
 spec:
   clusterConditions:
@@ -63,7 +65,7 @@ spec:
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - key: devops-tools
+      - key: dev
         operator: In
         values:
           - "true"

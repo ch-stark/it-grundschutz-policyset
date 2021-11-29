@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-namespace
+  name: policy-config-argocd-dex
   namespace: policies
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
@@ -36,7 +36,7 @@ spec:
                   applicationSet:
                     resources:
                       limits:
-                        cpu: "2"
+                        cpu: '2'
                         memory: 1Gi
                       requests:
                         cpu: 250m
@@ -45,7 +45,7 @@ spec:
                     processors: {}
                     resources:
                       limits:
-                        cpu: "2"
+                        cpu: '2'
                         memory: 2Gi
                       requests:
                         cpu: 250m
@@ -103,7 +103,7 @@ spec:
                   repo:
                     resources:
                       limits:
-                        cpu: "1"
+                        cpu: '1'
                         memory: 1Gi
                       requests:
                         cpu: 250m
@@ -134,10 +134,9 @@ spec:
                     route:
                       enabled: true
                     service:
-                      type: ""
+                      type: ''
                   tls:
                     ca: {}
-
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
@@ -163,26 +162,25 @@ spec:
                 metadata:
                   name: argocd-rbac-cm
                   namespace: openshift-gitops
-
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-namespace
+  name: binding-policy-config-argocd-dex
   namespace: policies
 placementRef:
-  name: placement-policy-namespace
+  name: placement-policy-config-argocd-dex
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-namespace
+  - name: policy-config-argocd-dex
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-namespace
+  name: placement-policy-config-argocd-dex
   namespace: policies
 spec:
   clusterConditions:
