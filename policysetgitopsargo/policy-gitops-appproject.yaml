@@ -27,6 +27,12 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
+                kind: Namespace
+                apiVersion: v1
+                metadata:
+                  name: pacman-app
+            - complianceType: musthave
+              objectDefinition:
                 apiVersion: argoproj.io/v1alpha1
                 kind: AppProject
                 metadata:
