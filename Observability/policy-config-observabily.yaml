@@ -1,0 +1,94 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-config-observab
+  namespace: open-cluster-management-observability
+  annotations:
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline Configuration
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-configure-observability
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: observability.open-cluster-management.io/v1beta2
+                kind: MultiClusterObservability
+                metadata:
+                  name: observability
+                spec:
+                  advanced:
+                    receive:
+                      replicas: 5
+                      resources:
+                        limits:
+                          cpu: 1000m
+                          memory: 100Gi
+                        requests:
+                          cpu: 300m
+                          memory: 1Gi
+                    query:
+                      replicas: 3
+                      resources:
+                        limits:
+                          cpu: 1000m
+                          memory: 5Gi
+                        requests:
+                          cpu: 300m
+                          memory: 1Gi
+                    retentionConfig:
+                      retentionResolutionRaw: 30d
+                      retentionResolution1h: 365d
+                      retentionInLocal: 48h
+                  storageConfig:
+                    receiveStorageSize: 250Gi
+                    compactStorageSize: 150Gi
+                    metricObjectStorage:
+                      name: thanos-object-storage
+                      key: thanos.yaml
+                  observabilityAddonSpec: {}
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-config-observab
+  namespace: open-cluster-management-observability
+placementRef:
+  name: placement-config-observab
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-config-observab
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-config-observab
+  namespace: open-cluster-management-observability
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: environment
+        operator: In
+        values:
+          - dev
